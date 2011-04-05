@@ -28,7 +28,7 @@ public class PingPong implements MouseMotionListener {
 	private void init() {
 		p1 = new Paddle(WIDTH / 2 - 25, 20, 50, 10,1);
 		p2 = new Paddle(WIDTH / 2 - 25, HEIGHT - 30, 50, 10,0);
-		ball.push(4f, 8f);
+		ball.reset();
 		
 	}
 	

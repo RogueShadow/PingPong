@@ -71,19 +71,23 @@ public class Ball {
 	public void reset(){
 		setX(PingPong.WIDTH/2);
 		setY(PingPong.HEIGHT/2);
-		vx = (float)Math.random()*10;
-		vy = (float)Math.random()*30;
+		float angle = (float)(Math.random()*(Math.PI*2));
+		float speed = (float)(Math.random()*5+5);
+		vx = (float) Math.sin(angle)*speed;
+		vy = (float) Math.cos(angle)*speed;
 	}
 	
 	public float[] getPrediction(float endy){
 		float dy = Math.abs(endy - y);
 		float dyt = dy/Math.abs(vy);
 		float xloc = x + vx*dyt;
+		while (xloc < 0 || xloc > (640-getSize())){
 		if (xloc > 640 - getSize()){
 			xloc = 640 - (xloc%(640-getSize()));
 		}
 		if (xloc < 0){
 			xloc = Math.abs(xloc);
+		}
 		}
 		prediction[0] = xloc;
 		prediction[1] = endy;

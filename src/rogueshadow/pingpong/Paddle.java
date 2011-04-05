@@ -59,12 +59,13 @@ public class Paddle {
 	}
 	public void updateAI(Ball ball) {
 		if (ball.vy > 0 && position == 0 || ball.vy <= 0 && position == 1){
-			float[] p = ball.getPrediction(y);
-			if (Math.abs(p[0] - x - width/2) > 1)x -= (p[0] < x + width/2) ? speed:-speed; 
+			float[] p = (position == 0) ? ball.getPrediction(y-ball.getSize()):ball.getPrediction(y+height);
+			if (Math.abs(p[0] - x - width/2) > speed)x -= (p[0] < x + width/2) ? speed:-speed; else
+				x = p[0] - width/2;
 		}else{
-			if (Math.abs(PingPong.WIDTH/2 - width/2) > 2){
-				x -= (x > PingPong.WIDTH/2 - width/2) ? speed:-speed;
-			}
+			float[] p = {PingPong.WIDTH/2 - width/2};
+			if (Math.abs(p[0] - x - width/2) > speed)x -= (p[0] < x + width/2) ? speed:-speed; else
+				x = p[0] - width/2;
 		}
 		
 	}
