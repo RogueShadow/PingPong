@@ -36,6 +36,9 @@ public class PingPong implements MouseMotionListener {
 		p1.render(g);
 		p2.render(g);
 		ball.render(g);
+		g.setColor(Color.red);
+		g.drawString(Integer.toString(p1.getScore()), 10, 20);
+		g.drawString(Integer.toString(p2.getScore()), WIDTH - 20, HEIGHT - 15);
 	}
 
 	private void update() {
@@ -49,7 +52,14 @@ public class PingPong implements MouseMotionListener {
 		p2.update();
 		
 		if (ball.getX() < 0 || ball.getX() > WIDTH - ball.getSize() )ball.vx*=-1;
-		if (ball.getY() < 0 || ball.getY() > HEIGHT - ball.getSize() )ball.vy*=-1;
+		if (ball.getY() < 0){
+			p2.score();
+			ball.reset();
+		}
+		if (ball.getY() > HEIGHT - ball.getSize()){
+			p1.score();
+			ball.reset();
+		}
 		if (ball.getShape().intersects(p1.getShape())){
 			ball.vy *= -1;
 		}

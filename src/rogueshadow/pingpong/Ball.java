@@ -68,7 +68,12 @@ public class Ball {
 	public void setY(float y) {
 		this.y = y;
 	}
-	
+	public void reset(){
+		setX(PingPong.WIDTH/2);
+		setY(PingPong.HEIGHT/2);
+		vx = (float)Math.random()*10;
+		vy = (float)Math.random()*30;
+	}
 	
 	public float[] getPrediction(float endy){
 		float dy = Math.abs(endy - y);

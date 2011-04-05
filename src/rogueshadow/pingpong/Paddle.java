@@ -10,6 +10,7 @@ public class Paddle {
 	int width, height;
 	int speed = 5;
 	int position;
+	int score = 0;
 
 	public Paddle(float x, float y, int width, int height, int position){
 		this.x = x; this.y = y;
@@ -49,6 +50,12 @@ public class Paddle {
 	}
 	public void update() {
 	
+	}
+	public void score(){
+		score += 1;
+	}
+	public int getScore(){
+		return score;
 	}
 	public void updateAI(Ball ball) {
 		if (ball.vy > 0 && position == 0 || ball.vy <= 0 && position == 1){
