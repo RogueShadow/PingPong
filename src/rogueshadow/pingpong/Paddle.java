@@ -8,7 +8,7 @@ public class Paddle {
 	float x, y;
 	float vx;
 	int width, height;
-	int speed = 5;
+	int speed = 8;
 	int position;
 	int score = 0;
 
@@ -49,7 +49,8 @@ public class Paddle {
 		this.height = height;
 	}
 	public void update() {
-	
+		if (x < 0)x = 0;
+		if (x > PingPong.WIDTH - width)x = PingPong.WIDTH - width;
 	}
 	public void score(){
 		score += 1;

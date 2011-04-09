@@ -9,6 +9,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.Image;
 
 import javax.swing.JFrame;
+import javax.swing.JSlider;
 
 public class PingPong implements MouseMotionListener {
 	public static final int WIDTH = 640;
@@ -17,6 +18,7 @@ public class PingPong implements MouseMotionListener {
 	JFrame j;
 	Graphics2D g2d;
 	Canvas c;
+	JSlider slider;
 	Image buffer;
 	float mouseX;
 	float mouseY;
@@ -36,36 +38,23 @@ public class PingPong implements MouseMotionListener {
 		p1.render(g);
 		p2.render(g);
 		ball.render(g);
-		g.setColor(Color.red);
+		g.setColor(Color.green);
+
 		g.drawString(Integer.toString(p1.getScore()), 10, 20);
 		g.drawString(Integer.toString(p2.getScore()), WIDTH - 20, HEIGHT - 15);
+
 	}
 
 	private void update() {
 		//p1.setX(mouseX - p1.getWidth()/2);
 		p1.updateAI(ball);
 		p2.updateAI(ball);
-		
-		
-		ball.update();
+		//p2.setX(mouseX - p1.getWidth()/2);
+
 		p1.update();
 		p2.update();
+		ball.update(p1,p2);
 		
-		if (ball.getX() < 0 || ball.getX() > WIDTH - ball.getSize() )ball.vx*=-1;
-		if (ball.getY() < 0){
-			p2.score();
-			ball.reset();
-		}
-		if (ball.getY() > HEIGHT - ball.getSize()){
-			p1.score();
-			ball.reset();
-		}
-		if (ball.getShape().intersects(p1.getShape())){
-			ball.vy *= -1;
-		}
-		if ( ball.getShape().intersects(p2.getShape())){
-			ball.vy *= -1;
-		}
 	}
 	
 	public PingPong() {
@@ -77,6 +66,8 @@ public class PingPong implements MouseMotionListener {
 		c.setVisible(true);
 		j.setResizable(false);
 		j.add(c);
+		slider = new JSlider();
+		//j.add(slider);
 		j.pack();
 		j.setVisible(true);
 		buffer = c.getGraphicsConfiguration().createCompatibleImage(WIDTH, HEIGHT);

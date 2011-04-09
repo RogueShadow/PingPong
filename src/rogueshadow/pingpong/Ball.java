@@ -82,12 +82,8 @@ public class Ball {
 		float dyt = dy/Math.abs(vy);
 		float xloc = x + vx*dyt;
 		while (xloc < 0 || xloc > (640-getSize())){
-		if (xloc > 640 - getSize()){
-			xloc = 640 - (xloc%(640-getSize()));
-		}
-		if (xloc < 0){
-			xloc = Math.abs(xloc);
-		}
+			if (xloc > 640 - getSize())xloc = 640-getSize() - (xloc%(640-getSize()));
+			if (xloc < 0)xloc = Math.abs(xloc);
 		}
 		prediction[0] = xloc;
 		prediction[1] = endy;
@@ -95,13 +91,50 @@ public class Ball {
 	}
 
 	public void render(Graphics2D g) {
-		g.fill(getShape());
-		g.setColor(Color.green);
-		g.fillOval((int)prediction[0],(int)prediction[1],5,5);
+		g.fillOval((int)x,(int)y,getSize(),getSize());
+		g.setColor(Color.blue);
+		g.fillOval((int)prediction[0],(int)prediction[1],getSize(),getSize());
 	}
-	public void update(){
+	public void update(Paddle p1, Paddle p2){
 		this.x += this.vx;
 		this.y += this.vy;
+		if (getShape().intersects(p1.getShape()) || getShape().intersects(p2.getShape())){
+			this.x -= this.vx;
+			this.y -= this.vy;
+			this.vx /= 2f;
+			this.vy /= 2f;
+			this.x += this.vx;
+			this.y += this.vy;
+			if (getShape().intersects(p1.getShape()) || getShape().intersects(p2.getShape())){
+				this.x -= this.vx;
+				this.y -= this.vy;
+				this.vy *= -1;
+				this.vy *= 2;
+				this.vx *= 2;
+				this.y += this.vy;
+			}else{
+				this.vx *= 2;
+				this.vy *= 2;
+			}
+		}
+		if (this.x < 0){
+			this.x -= this.vx;
+			this.vx *= -1;
+			//this.x += this.vx;
+		}
+		if (this.x > PingPong.WIDTH - getSize()){
+			this.x -= this.vx;
+			this.vx *= -1;
+			//this.vx += this.vx;
+		}
+		if (this.y < -getSize()){
+			p1.score();
+			reset();
+		}
+		if (this.y > PingPong.HEIGHT){
+			p2.score();
+			reset();
+		}
 	}
 	public float getSpeed(){
 		return (float)Math.sqrt(vx*vx+vy*vy);
